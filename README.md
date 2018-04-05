@@ -4,8 +4,8 @@
 
 ### Cél:
  * A közismert Flappy Bird játék JavaScript implementációjának elkészítése a Casual Games Project keretében.
- * Egy keretrendszer ikalakítása 2D-s JavaScript játékok fejlesztéséhez.
- * Fejlesztés Az ELTE IK Játékfejlesztés tárgyának első beadandójához.
+ * Egy keretrendszer kialakítása 2D-s JavaScript játékok fejlesztéséhez.
+ * Fejlesztés az ELTE IK Játékfejlesztés tárgyának első beadandójához.
 
 ### Casual Games Project:
  * Egyszerű játékok implementálása önfejlesztés céljából.
@@ -14,7 +14,7 @@
  * Teljes tesztlefedettség
  * Folytonos fejlesztés. (Időről időre visszatérek a projektekhez.)
  * Konvenciók:
-    * JAVA konvenciók.
+    * Mindenben a megszokott JAVA konvenciók érvényesek.
     * OOP és kivételek.
     * CamelCase Osztály, metódus, adattag nevek.
     * Fájlnevek weben kisbetűkkel, alulvonással, máshol CamelCase-el.
