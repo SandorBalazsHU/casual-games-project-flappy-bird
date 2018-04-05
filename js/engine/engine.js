@@ -13,16 +13,47 @@ class Game {
         this.eventListener          = eventListener;
         this.collisionHandler       = new Collision(this);
         this.fileLoader             = new FileLoader(this);
+        this.renderLoop             = null;
+        this.fps                    = Math.floor(1000/60);
     }
+
     start() {
         this.fileLoader.load(this, loadFinished);
-        this.render("static");
-        this.render();
-    }
-    render(mode = dynamic) {
-        if(mode = "static"){
-
+        if(!this.getSemafor()) {
+            this.setSemafor();
+            this.render();
+        }else{
+            new Error("An another render alredy use this canvas!");
         }
+    }
+
+    stop() {
+        clearInterval(this.renderLoop);
+        this.clearSemafor();
+    }
+
+    render(mode = dynamic) {
+        for(let entity of game.staticEntitys) entity.draw(this);
+
+        this.renderLoop = setInterval(function() {
+            this.eventListener.update();
+            this.collisionHandler.update();
+            for(let entity of game.diynamicEntitys) entity.draw(this);
+        }, this.fps);
+    }
+
+    setSemafor() {
+        this.background.classList.add("semafor");
+        this.foreground.classList.add("semafor");
+    }
+
+    getSemafor() {
+        return ((this.background.getAttribute("class") == "semafor") || (this.foreground.getAttribute("class") == "semafor"));
+    }
+
+    clearSemafor() {
+        this.background.classList.remove("semafor");
+        this.background.classList.remove("semafor");
     }
 
     addEntity(entity) {
@@ -99,12 +130,16 @@ class FileLoader {
             this.callBackRegister.set(entity, entity.load(this.callback));
         }
 
-        for (let [entity, i] of this.callBackRegister) this.allElements += i;
-
+        var firstCount = true;
         var checkLoad = setInterval(function(){
             for (let [entity, i] of this.callBackRegister) this.vaitingElements += i;
 
-            var progressInPercent = ((this.allElements-this.vaitingElements)/this.allElements)*100;
+            if(firstCount) {
+                this.allElements = this.vaitingElements;
+                firstCount = false;
+            }
+
+            var progressInPercent = ((this.allElements - this.vaitingElements) / this.allElements) * 100;
             game.eventListener.callEvent("LoadInProgress", progressInPercent);
 
             if(this.vaitingElements == 0) {
