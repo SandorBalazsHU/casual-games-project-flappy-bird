@@ -1,24 +1,24 @@
 class Entity {
     constructor(x, y) {
-        this.x      = x;
-        this.y      = y;
-        this.images = new Map();
-        this.sounds = new Set();
-        this.events = new Map();
-        this.animation = new Map();
+        this.x              = x;
+        this.y              = y;
+        this.images         = new Map();
+        this.sounds         = new Set();
+        this.events         = new Map();
+        this.animation      = new Map();
         this.animationState = 0;
     }
+
     load(callBack) {
-        for (let image of this.images){
+        for (let [name, magei] of this.images) {
             image.load(callBack(this));
         }
-        for (let sound of this.sounds){    
-            var sound = document.createElement('audio');
-            audio.oncanplay = callBack(this);
-            sound.src   = sound;
+        for (let [name, sound] of this.sounds) {
+            sound.load(callBack(this));
         }
         return this.images.size + this.sounds.size;
     }
+
     draw(game) {
         var spriteSheet = this.animation.get("spriteSheet");
         game.drawImage(this.images.get(spriteSheet),
