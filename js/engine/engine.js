@@ -23,7 +23,7 @@ class Game {
             this.setSemafor();
             this.render();
         }else{
-            new Error("An another render alredy use this canvas!");
+            new Error("An another engine instance alredy use this canvas!");
         }
     }
 
@@ -32,9 +32,8 @@ class Game {
         this.clearSemafor();
     }
 
-    render(mode = dynamic) {
+    render() {
         for(let entity of game.staticEntitys) entity.draw(this);
-
         this.renderLoop = setInterval(function() {
             this.eventListener.update();
             this.collisionHandler.update();
@@ -153,55 +152,4 @@ class FileLoader {
     callback(entity) {
         this.callBackRegister.set(entity, this.callBackRegister.get(entity)-1); 
     }
-}
-
-class Entity {
-    constructor(x, y) {
-        this.x      = x;
-        this.y      = y;
-        this.images = new Set();
-        this.sounds = new Set();
-        this.events = new Map();
-        this.anima
-    }
-    load(callBack) {
-        for (let image of this.images){
-            var hos = document.createElement('img');
-            hos.onload = callBack(this);
-            hos.src = image;
-        }
-        for (let sound of this.sounds){    
-            var sound = document.createElement('audio');
-            audio.oncanplay = callBack(this);
-            sound.src   = sound;
-        }
-        return this.images.size + this.sounds.size;
-    }
-    draw() {
-
-    }
-    move() {
-
-    }
-    event(event) {
-
-    }
-    animate() {
-
-    }
-    hit() {
-
-    }
-    getImgX() {
-    }
-    getImgY() {
-    }
-    getWidth() {
-    }
-    getHeight() {
-    }
-}
-
-class diynamicEntity {
-
 }
