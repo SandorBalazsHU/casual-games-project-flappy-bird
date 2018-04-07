@@ -16,6 +16,11 @@ class Image {
 
 class spriteSheet extends image {
     constructor(src, width, height) {
-        super(src, width, height);
+        super(name, src, width, height);
+        this.stages = new Map();
+    }
+    addStage(index = -1, x, y, diagonalX, diagonalY) {
+        var animationIndex = index == -1 ? this.stages.size+1 : index;
+        this.stages.set(animationIndex, [x, y, diagonalX, diagonalY]);
     }
 }
