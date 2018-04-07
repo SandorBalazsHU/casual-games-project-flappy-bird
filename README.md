@@ -7,7 +7,7 @@
  * A közismert Flappy Bird játék és néhány további játék JavaScript implementációjának elkészítése a keretrendszer felhasználásával.
  * Fejlesztés az ELTE IK Játékfejlesztés tárgyának első beadandójához.
 
-### Konvenciók
+### Konvenciók:
  * Mindenben a megszokott JAVA konvenciók érvényesek.
  * OOP és kivételek.
  * CamelCase Osztály, metódus, adattag nevek.
