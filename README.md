@@ -1,6 +1,6 @@
 # Az ELTE IK Játékprogramok készítése tantárgyához készített első beadandó.
 
-## Flappy Bird JS
+## JS2D
 
 ### Cél:
  * Egy keretrendszer kialakítása 2D-s JavaScript játékok fejlesztéséhez.
