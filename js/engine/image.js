@@ -21,6 +21,6 @@ class spriteSheet extends image {
     }
     addStage(index = -1, x, y, diagonalX, diagonalY) {
         var animationIndex = index == -1 ? this.stages.size+1 : index;
-        this.stages.set(animationIndex, [x, y, diagonalX, diagonalY]);
+        this.stages.set(animationIndex, {x : x, y : y, w : diagonalX-x, h : diagonalY-y});
     }
 }

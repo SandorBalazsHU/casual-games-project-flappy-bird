@@ -5,7 +5,6 @@ class Entity {
         this.images         = new Map();
         this.sounds         = new Set();
         this.events         = new Map();
-        this.animation      = new Map();
         this.animationState = 0;
     }
 
@@ -20,11 +19,11 @@ class Entity {
     }
 
     draw(game) {
-        var spriteSheet = this.animation.get("spriteSheet");
-        game.drawImage(this.images.get(spriteSheet),
-        spriteSheet[this.animation]["x"], spriteSheet[this.animation]["y"],
-        spriteSheet[this.animation]["w"], spriteSheet[this.animation]["h"], 
-        this.x, this.y, 90, 124);
+        var sprite = this.images.get(spriteSheet);
+        game.drawImage(sprite.image,
+        sprite.stages.get(this.animation).x, sprite.stages.get(this.animation).y,
+        sprite.stages.get(this.animation).w, sprite.stages.get(this.animation).h, 
+        this.x, this.y, sprite.width, sprite.height);
     }
     move() {
 
