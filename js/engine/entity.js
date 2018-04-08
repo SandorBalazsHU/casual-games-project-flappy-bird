@@ -41,9 +41,11 @@ class Entity {
     }
     getImgY() {
     }
-    getWidth() {
+    get width() {
+        return this.images.get(spriteSheet).width;
     }
-    getHeight() {
+    get height() {
+        return this.images.get(spriteSheet).height;
     }
 }
 
