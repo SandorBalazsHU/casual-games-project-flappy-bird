@@ -1,5 +1,11 @@
 "use strict";
-class Game {
+
+import { Entity }       from "./entity.js";
+import { Image }        from "./image.js";
+import { SpriteSheet }  from "./image.js";
+import { Sound }        from "./sound.js";
+
+export class Game {
     constructor(background, foreground, eventListener = new EventListener(this)) {
         this.background             = document.getElementById(background);
         this.backgroundContext      = background.getContext('2d');

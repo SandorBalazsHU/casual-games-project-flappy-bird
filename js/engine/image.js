@@ -1,4 +1,4 @@
-class Image {
+export class Image {
     constructor(name, src, width, height) {
         this.name   = name;
         this.src    = src;
@@ -14,7 +14,7 @@ class Image {
     }
 }
 
-class spriteSheet extends image {
+export class SpriteSheet extends image {
     constructor(src, width, height) {
         super(name, src, width, height);
         this.stages = new Map();

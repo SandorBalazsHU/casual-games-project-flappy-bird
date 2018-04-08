@@ -1,4 +1,4 @@
-class Sound {
+export class Sound {
     constructor(name, src) {
         this.name   = name;
         this.src    = src;
