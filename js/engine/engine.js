@@ -16,8 +16,8 @@ export class Game {
         this.foregroundContext      = foreground.getContext('2d');
         this.diynamicEntitys        = new Set();
         //Kezelők
-        this.eventHandler           = new eventHandler(this);
-        this.collisionHandler       = new Collision(this);
+        this.eventHandler           = new EventHandler(this);
+        this.collisionHandler       = new CollisionHandler(this);
         this.fileLoader             = new FileLoader(this);
         //Render
         this.renderLoop             = null;
@@ -67,7 +67,7 @@ export class Game {
             if(entity instanceof StaticEntity) this.staticEntitys.add(entity);
             if(entity instanceof DinamicEntity) this.diynamicEntitys.add(entity);
             if(typeof entity.callEvent === 'function') this.eventHandler.addEntity(entity);
-            if(typeof entity.hit === 'function') collisionHandler.addEntity(entity);
+            if(typeof entity.hit === 'function') this.collisionHandler.addEntity(entity);
         }else{
             new Error(typeof entity + " type is not Entity");
         }
@@ -78,34 +78,20 @@ export class Game {
             if(entity instanceof StaticEntity) this.staticEntitys.delete(entity);
             if(entity instanceof DinamicEntity) this.diynamicEntitys.delete(entity);
             if(typeof entity.event === 'function') this.eventHandler.removeEntity(entity);
-            if(typeof Entity.hit === 'function') collisionHandler.removeEntity(entity);
+            if(typeof Entity.hit === 'function') this.collisionHandler.removeEntity(entity);
         }else{
             new Error(typeof entity + " type is not Entity");
         }
     }
 }
 
-class eventHandler {
-    constructor(game) {
-        this.game                = game;
-        this.keyListener         = new Map();
-        this.mouseListener       = new Map();
-        this.costumEventListener = new Map();
-    }
-    callEvent(event, value = null) {
-    }
-    addEntity(entity) {
-        if(typeof entity.callEvent === 'function') {
-            if(entity.events.get("key"))   this.keyListener.set(entity, entity.events.get("key"));
-            if(entity.events.get("mouse")) this.mouseListener.set(entity, entity.events.get("mouse"));
-            if(entity.events.get("event")) this.costumEventListener.set(entity, entity.events.get("event"));
-        }
-    }
-}
-
-class Collision {
+class CollisionHandler {
     constructor(game) {
         this.game = game;
+    }
+    addEntity(entity) {
+    }
+    removeEntity(entity) {
     }
 }
 

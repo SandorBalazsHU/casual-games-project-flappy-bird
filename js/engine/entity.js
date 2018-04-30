@@ -1,9 +1,10 @@
-export class Entity {
+class Entity {
     constructor(x, y) {
         this.x              = x;
         this.y              = y;
         this.images         = new Map();
         this.sounds         = new Set();
+        //[key] =>
         this.events         = new Map();
         this.animationState = 0;
     }
@@ -49,10 +50,10 @@ export class Entity {
     }
 }
 
-class diynamicEntity {
+export class diynamicEntity extends Entity{
 
 }
 
-class AnimatedEventDrivenDynamicEntity {
+export class staticEntity extends Entity {
     
 }
