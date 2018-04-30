@@ -6,25 +6,25 @@ import { SpriteSheet }  from "./image.js";
 import { Sound }        from "./sound.js";
 
 export class Game {
-    constructor(background, foreground, eventListener = new EventListener(this)) {
+    constructor(background, foreground) {
         this.background             = document.getElementById(background);
         this.backgroundContext      = background.getContext('2d');
+        this.staticEntitys          = new Set();
+
         this.foreground             = document.getElementById(foreground);
         this.foregroundContext      = foreground.getContext('2d');
-        this.staticEntitys          = new Set();
         this.diynamicEntitys        = new Set();
-        this.keyListener            = new Map();
-        this.mouseListener          = new Map();
-        this.costumEventListener    = new Map();
-        this.eventListener          = eventListener;
+
+        this.eventHandler           = new eventHandler(this);
         this.collisionHandler       = new Collision(this);
         this.fileLoader             = new FileLoader(this);
+
         this.renderLoop             = null;
         this.fps                    = Math.floor(1000/60);
     }
 
     start() {
-        this.fileLoader.load(this, loadFinished);
+        this.fileLoader.load(this);
         if(!this.getSemafor()) {
             this.setSemafor();
             this.render();
@@ -39,11 +39,11 @@ export class Game {
     }
 
     render() {
-        for(let entity of game.staticEntitys) entity.draw(this);
+        for(let entity of game.staticEntitys) if(entity.status == "online") entity.draw(this);
         this.renderLoop = setInterval(function() {
-            this.eventListener.update();
+            this.eventHandler.update();
             this.collisionHandler.update();
-            for(let entity of game.diynamicEntitys) entity.draw(this);
+            for(let entity of game.diynamicEntitys) if(entity.status == "online") entity.draw(this);
         }, this.fps);
     }
 
@@ -102,9 +102,12 @@ export class Game {
     }
 }
 
-class EventListener {
+class eventHandler {
     constructor(game) {
         this.game = game;
+        this.keyListener            = new Map();
+        this.mouseListener          = new Map();
+        this.costumEventListener    = new Map();
     }
     callEvent(event, value = null) {
     }
@@ -119,7 +122,6 @@ class Collision {
 class FileLoader {
     constructor(game) {
         this.game = game;
-        this.loadFinished = loadFinished;
         this.callBackRegister = new Map();
         this.checkLoadInterval = 35;
         this.vaitingElements = 0;
@@ -148,7 +150,6 @@ class FileLoader {
             game.eventListener.callEvent("LoadInProgress", progressInPercent);
 
             if(this.vaitingElements == 0) {
-                this.loadFinished();
                 game.eventListener.callEvent("LoadFinished");
                 clearInterval(checkLoad);
             }
