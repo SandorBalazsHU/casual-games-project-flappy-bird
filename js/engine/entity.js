@@ -5,7 +5,7 @@ class Entity {
         this.images         = new Map();
         this.sounds         = new Set();
         //[key] =>
-        this.events         = new Map();
+        this.events         = new EventSet();
         this.animationState = 0;
     }
 
