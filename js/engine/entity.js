@@ -28,7 +28,7 @@ export class Entity {
     move() {
 
     }
-    event(event) {
+    callEvent(event) {
 
     }
     animate() {

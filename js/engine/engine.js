@@ -7,18 +7,19 @@ import { Sound }        from "./sound.js";
 
 export class Game {
     constructor(background, foreground) {
+        //Statikus elemek
         this.background             = document.getElementById(background);
         this.backgroundContext      = background.getContext('2d');
         this.staticEntitys          = new Set();
-
+        //Dinamikus elemek
         this.foreground             = document.getElementById(foreground);
         this.foregroundContext      = foreground.getContext('2d');
         this.diynamicEntitys        = new Set();
-
+        //Kezelők
         this.eventHandler           = new eventHandler(this);
         this.collisionHandler       = new Collision(this);
         this.fileLoader             = new FileLoader(this);
-
+        //Render
         this.renderLoop             = null;
         this.fps                    = Math.floor(1000/60);
     }
@@ -62,39 +63,21 @@ export class Game {
     }
 
     addEntity(entity) {
-        if(entity instanceof Entity){
-            if(typeof Entity.move === 'function')
-            {
-                this.diynamicEntitys.add(entity);
-            }else{
-                this.staticEntitys.add(entity);
-            }
-            if(typeof Entity.event === 'function')
-            {
-                if(entity.events.get("key"))   this.keyListener.set(entity, entity.events.get("key"));
-                if(entity.events.get("mouse")) this.mouseListener.set(entity, entity.events.get("mouse"));
-                if(entity.events.get("event")) this.costumEventListener.set(entity, entity.events.get("event"));
-            }
-            if(typeof Entity.hit === 'function') collisionHandler.addEntity(entity);
+        if(entity instanceof Entity) {
+            if(entity instanceof StaticEntity) this.staticEntitys.add(entity);
+            if(entity instanceof DinamicEntity) this.diynamicEntitys.add(entity);
+            if(typeof entity.callEvent === 'function') this.eventHandler.addEntity(entity);
+            if(typeof entity.hit === 'function') collisionHandler.addEntity(entity);
         }else{
             new Error(typeof entity + " type is not Entity");
         }
     }
 
     removeEntity(entity) {
-        if(entity instanceof Entity){
-            if(typeof Entity.move === 'function')
-            {
-                this.diynamicEntitys.delete(entity);
-            }else{
-                this.staticEntitys.delete(entity);
-            }
-            if(typeof Entity.event === 'function')
-            {
-                this.keyListener.delete(entity);
-                this.mouseListener.delete(entity);
-                this.costumEventListener.delete(entity);
-            }
+        if(entity instanceof Entity) {
+            if(entity instanceof StaticEntity) this.staticEntitys.delete(entity);
+            if(entity instanceof DinamicEntity) this.diynamicEntitys.delete(entity);
+            if(typeof entity.event === 'function') this.eventHandler.removeEntity(entity);
             if(typeof Entity.hit === 'function') collisionHandler.removeEntity(entity);
         }else{
             new Error(typeof entity + " type is not Entity");
@@ -104,12 +87,19 @@ export class Game {
 
 class eventHandler {
     constructor(game) {
-        this.game = game;
-        this.keyListener            = new Map();
-        this.mouseListener          = new Map();
-        this.costumEventListener    = new Map();
+        this.game                = game;
+        this.keyListener         = new Map();
+        this.mouseListener       = new Map();
+        this.costumEventListener = new Map();
     }
     callEvent(event, value = null) {
+    }
+    addEntity(entity) {
+        if(typeof entity.callEvent === 'function') {
+            if(entity.events.get("key"))   this.keyListener.set(entity, entity.events.get("key"));
+            if(entity.events.get("mouse")) this.mouseListener.set(entity, entity.events.get("mouse"));
+            if(entity.events.get("event")) this.costumEventListener.set(entity, entity.events.get("event"));
+        }
     }
 }
 
