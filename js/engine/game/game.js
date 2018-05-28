@@ -5,9 +5,30 @@ export class Game {
         this.canvases = new Map();
         this.canvases = new Map();
         this.gameDiv = gameDiv;
-        if(typeof(this.gameDiv) == "string") document.getElementById(gameDiv);
+        if(typeof(this.gameDiv) == "string") {
+            if(document.getElementById(gameDiv) == null) {
+                new Error("The game div doesn't exist");
+            }else{
+                document.getElementById(gameDiv);
+            }
+        }
         this.layers = 0;
         this.layerRoof = 0;
+        this.eventHandler = new EventHandler( this );
+        this.collisionHandler = new CollisionHandler( this );
+        this.fileLoader = new FileLoader( this );
+        this.render = new Render( this );
+    }
+
+    addCanvas( canvas ) {
+        if(entity instanceof Entity) {
+            if(entity instanceof StaticEntity) this.staticEntitys.add(entity);
+            if(entity instanceof DinamicEntity) this.diynamicEntitys.add(entity);
+            if(typeof entity.callEvent === 'function') this.eventHandler.addEntity(entity);
+            if(typeof entity.hit === 'function') this.collisionHandler.addEntity(entity);
+        }else{
+            new Error(typeof entity + " type is not Entity");
+        }
     }
 
     start() {
@@ -34,29 +55,16 @@ export class Game {
         }, this.fps);
     }
 
-    setSemafor() {
-        this.background.classList.add("semafor");
-        this.foreground.classList.add("semafor");
+    _setSemafor() {
+        this.gameDiv.classList.add("semafor");
     }
 
-    getSemafor() {
-        return ((this.background.getAttribute("class") == "semafor") || (this.foreground.getAttribute("class") == "semafor"));
+    _getSemafor() {
+        return (this.gameDiv.getAttribute("class") == "semafor");
     }
 
-    clearSemafor() {
-        this.background.classList.remove("semafor");
-        this.background.classList.remove("semafor");
-    }
-
-    addEntity(entity) {
-        if(entity instanceof Entity) {
-            if(entity instanceof StaticEntity) this.staticEntitys.add(entity);
-            if(entity instanceof DinamicEntity) this.diynamicEntitys.add(entity);
-            if(typeof entity.callEvent === 'function') this.eventHandler.addEntity(entity);
-            if(typeof entity.hit === 'function') this.collisionHandler.addEntity(entity);
-        }else{
-            new Error(typeof entity + " type is not Entity");
-        }
+    _clearSemafor() {
+        this.gameDiv.classList.remove("semafor");
     }
 
     removeEntity(entity) {
